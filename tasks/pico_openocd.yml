@@ -1,0 +1,51 @@
+- name: Install packages needed for OpenOCD
+  become: true
+  ansible.builtin.apt:
+    name:
+      - pkg-config
+      - libtool
+      - automake
+      - autoconf
+      - build-essential
+      - texinfo
+      - libtool
+      - libftdi-dev
+      - libusb-1.0-0-dev
+    state: present
+
+# OpenOCD installation
+- name: Check if the openOCD repo directory exists
+  ansible.builtin.stat:
+    path: "{{ pico_ocd_path }}"
+  register: repo_dir
+
+- name: Clone openOCD repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/openocd.git
+    dest: "{{ pico_ocd_path }}"
+    version: rp2040
+    recursive: true
+    depth: 1
+  when: not repo_dir.stat.exists
+
+- name: Run bootstrap
+  ansible.builtin.command:
+    chdir: "{{ pico_ocd_path }}"
+    cmd: ./bootstrap
+  register: result
+
+- name: Configure OpenOCD
+  ansible.builtin.command:
+    chdir: "{{ pico_ocd_path }}"
+    cmd: ./configure --enable-ftdi --enable-sysfsgpio --enable-bcm2835gpio
+
+- name: Build OpenOCD
+  ansible.builtin.command:
+    chdir: "{{ pico_ocd_path }}"
+    cmd: make -j4
+
+- name: Install OpenOCD
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ pico_ocd_path }}"
+    cmd: make install

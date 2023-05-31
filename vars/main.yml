@@ -1,0 +1,14 @@
+# General
+pico_user: default
+pico_install_path: "/home/{{ pico_user }}/"
+pico_sdk_path: "{{ pico_install_path }}pico/pico-sdk"
+pico_examples_path: "{{ pico_install_path }}pico/pico-examples"
+
+# Pico debugging
+pico_ocd_path: "{{ pico_install_path }}pico/pico-ocd"
+pico_picotool_path: "{{ pico_install_path }}pico/pico-picotool"
+
+# Pico extras paths
+pico_extras_path: "{{ pico_install_path }}pico/pico-extras"
+pico_playground_path: "{{ pico_install_path }}pico/pico-playground"
+pico_project_generator_path: "{{ pico_install_path }}pico/pico-project-generator"

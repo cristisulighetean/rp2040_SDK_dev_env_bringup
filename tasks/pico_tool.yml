@@ -1,0 +1,31 @@
+- name: Install packages needed for picotool
+  become: true
+  ansible.builtin.apt:
+    name:
+      - libusb-1.0-0-dev
+    state: present
+
+# Pico tool installation
+- name: Clone the picotool repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/picotool.git
+    dest: "{{ pico_picotool_path }}"
+    version: master
+
+- name: Make sure the build directory exists
+  ansible.builtin.file:
+    path: "{{ pico_picotool_path }}/build"
+    state: directory
+    mode: "0755"
+
+- name: Run CMake
+  ansible.builtin.command:
+    chdir: "{{ pico_picotool_path }}/build"
+    cmd: cmake ../
+  environment:
+    PICO_SDK_PATH: "{{ pico_sdk_path }}"
+
+- name: Build picotool
+  ansible.builtin.command:
+    chdir: "{{ pico_picotool_path }}/build"
+    cmd: make

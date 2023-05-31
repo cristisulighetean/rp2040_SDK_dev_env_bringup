@@ -1,0 +1,27 @@
+---
+- name: Setup & install the RP2040 C/C++ SDK
+  hosts: dev_machines
+  remote_user: default
+
+  vars_files:
+    - vars/main.yml
+
+  pre_tasks:
+    - name: Update cache if needed
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  tasks:
+    - name: Install the RP2040 C/C++ SDK
+      ansible.builtin.import_tasks: tasks/pico_sdk.yml
+
+    - name: Install openOCD
+      ansible.builtin.import_tasks: tasks/pico_openocd.yml
+
+    - name: Install picotool
+      ansible.builtin.import_tasks: tasks/pico_tool.yml
+
+    - name: Install pico extra packages
+      ansible.builtin.import_tasks: tasks/pico_extra.yml

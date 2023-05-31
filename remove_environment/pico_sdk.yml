@@ -1,0 +1,23 @@
+- name: Remove the toolchain for the SDK
+  ansible.builtin.apt:
+    name:
+      - gcc-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - build-essential
+    state: absent
+  become: true
+
+- name: Remove the pico-sdk and pico-examples repos
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ pico_sdk_path }}"
+    - "{{ pico_examples_path }}"
+  become: true
+
+- name: Remove PICO_SDK_PATH from .bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: "export PICO_SDK_PATH={{ pico_sdk_path }}"
+    state: absent

@@ -1,0 +1,17 @@
+- name: Remove the packages needed for OpenOCD
+  become: true
+  ansible.builtin.apt:
+    name:
+      - automake
+      - autoconf
+      - texinfo
+      - libtool
+      - libftdi-dev
+      - libusb-1.0-0-dev
+    state: absent
+
+- name: Remove the pico-ocd repo
+  ansible.builtin.file:
+    path: "{{ pico_ocd_path }}"
+    state: absent
+  become: true

@@ -1,0 +1,13 @@
+- name: Remove packages needed for picotool
+  become: true
+  ansible.builtin.apt:
+    name:
+      - libusb-1.0-0-dev
+    state: absent
+
+# Pico tool installation
+- name: Remove the picotool repo
+  ansible.builtin.file:
+    path: "{{ pico_picotool_path }}"
+    state: absent
+  become: true

@@ -1,0 +1,21 @@
+- name: Clone the pico-extras repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/pico-extras.git
+    dest: "{{ pico_extras_path }}"
+    version: master
+    recursive: true
+
+
+- name: Clone the pico-playground repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/pico-playground.git
+    dest: "{{ pico_playground_path }}"
+    version: master
+    recursive: true
+
+- name: Clone the pico-project-generator repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/pico-project-generator.git
+    dest: "{{ pico_project_generator_path }}"
+    version: master
+

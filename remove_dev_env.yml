@@ -1,0 +1,20 @@
+---
+- name: Remove the RP2040 C/C++ SDK
+  hosts: dev_machines
+  remote_user: default
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Remove the RP2040 C/C++ SDK
+      ansible.builtin.import_tasks: remove_environment/pico_sdk.yml
+
+    - name: Remove openOCD
+      ansible.builtin.import_tasks: remove_environment/pico_openocd.yml
+
+    - name: Remove picotool
+      ansible.builtin.import_tasks: remove_environment/pico_tool.yml
+
+    - name: Remove pico extra packages
+      ansible.builtin.import_tasks: remove_environment/pico_extra.yml

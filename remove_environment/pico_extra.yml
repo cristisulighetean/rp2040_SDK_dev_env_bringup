@@ -1,0 +1,9 @@
+- name: Remove the pico extras directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ pico_extras_path }}"
+    - "{{ pico_playground_path }}"
+    - "{{ pico_project_generator_path }}"
+  become: true

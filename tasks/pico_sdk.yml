@@ -1,0 +1,32 @@
+- name: Install the toolchain for the SDK
+  ansible.builtin.apt:
+    name:
+      - git
+      - python3
+      - python3-pip
+      - python3-venv
+      - cmake
+      - gcc-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - build-essential
+    state: present
+  become: true
+
+- name: Clone the pico-sdk repo & update submodules
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/pico-sdk.git
+    dest: "{{ pico_sdk_path }}"
+    version: master
+    recursive: true
+    depth: 1
+
+- name: Clone the pico-examples repo
+  ansible.builtin.git:
+    repo: https://github.com/raspberrypi/pico-examples.git
+    dest: "{{ pico_examples_path }}"
+    version: master
+
+- name: Add PICO_SDK_PATH to .bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: "export PICO_SDK_PATH={{ pico_sdk_path }}"
